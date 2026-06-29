@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from sqlalchemy import func
 from . import models, schemas
 
 ## Create Candidate
@@ -24,11 +25,15 @@ def get_candidate(db: Session, candidate_id: int):
 def get_dashboard(db: Session, skip: int = 0, limit: int = 100):
     total_candidate = db.query(models.Candidate.candidate_id).count()
     total_feedback = db.query(models.Feedback.feedback_id).count()
+    top_category = (db.query(models.Feedback.category, func.count(models.Feedback.category).label("count"))
+                    .group_by(models.Feedback.category)
+                    .order_by(func.count(models.Feedback.category).desc())
+                    .first())
     candidates = db.query(models.Candidate).all()
     return {
         "total_candidate": total_candidate,
         "total_feedback": total_feedback,
-        "top_category": "-",
+        "top_category": top_category[0] if top_category else "-",
         "candidates": candidates
     }
 

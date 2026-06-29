@@ -9,7 +9,7 @@ class Candidate(Base):
     candidate_name = Column(String, nullable=False)
     position = Column(String, nullable=False)
     status = Column(String, default="Pending")
-    feedbacks = relationship("Feedback", back_populates="candidate")
+    feedback = relationship("Feedback", back_populates="candidate", uselist=False)
 
 class Feedback(Base):
     __tablename__ = "feedback"
@@ -18,4 +18,4 @@ class Feedback(Base):
     client_feedback = Column(Text, nullable=False)
     category = Column(String, default="-")
     created_at = Column(DateTime, default=datetime.utcnow)
-    candidate = relationship("Candidate", back_populates="feedbacks")
+    candidate = relationship("Candidate", back_populates="feedback")

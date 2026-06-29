@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 from . import models, schemas
+from datetime import datetime
 
 ## Create Candidate
 def create_candidate(db: Session, candidate: schemas.CandidateCreate):
@@ -15,7 +16,30 @@ def create_candidate(db: Session, candidate: schemas.CandidateCreate):
 
 ## Get Candidate
 def get_candidate(db: Session, candidate_id: int):
-    return(
+    candidate = (
+        db.query(models.Candidate)
+        .filter(models.Candidate.candidate_id == candidate_id)
+        .first()
+    )
+    if not candidate:
+        return None
+    
+    latest_feedback = (
+        db.query(models.Feedback)
+        .filter(models.Feedback.candidate_id == candidate_id)
+        .order_by(models.Feedback.created_at.desc())
+        .first()
+    )
+    return {
+        "candidate_id": candidate.candidate_id,
+        "candidate_name": candidate.candidate_name,
+        "position": candidate.position,
+        "status": candidate.status,
+        "feedback": latest_feedback
+    }
+
+def get_candidate_by_id(db: Session, candidate_id: int):
+    return (
         db.query(models.Candidate)
         .filter(models.Candidate.candidate_id == candidate_id)
         .first()
@@ -39,15 +63,27 @@ def get_dashboard(db: Session, skip: int = 0, limit: int = 100):
 
 ## Save Feedback
 def save_feedback(db: Session, candidate_id: int, feedback: str, category: str):
-    db_feedback = models.Feedback(
-        candidate_id = candidate_id,
-        client_feedback = feedback,
-        category = category
+    existing_feedback = (
+        db.query(models.Feedback)
+        .filter(models.Feedback.candidate_id == candidate_id)
+        .first()
     )
 
-    db.add(db_feedback)
-    candidate = get_candidate(db, candidate_id)
+    if existing_feedback:
+        existing_feedback.client_feedback = feedback
+        existing_feedback.category = category
+        existing_feedback.created_at = datetime.utcnow()
+
+    else:
+        db_feedback = models.Feedback(
+            candidate_id=candidate_id,
+            client_feedback=feedback,
+            category=category
+        )
+        db.add(db_feedback)
+
+    candidate = get_candidate_by_id(db, candidate_id)
+
     if candidate:
         candidate.status = "Analyzed"
     db.commit()
-    return db_feedback

@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from datetime import datetime
 
 class CandidateCreate(BaseModel):
     candidate_name: str
@@ -26,3 +27,23 @@ class DashboardResponse(BaseModel):
     total_feedback: int
     top_category: str
     candidates: list[CandidateResponse]
+
+class FeedbackResponse(BaseModel):
+    feedback_id: int
+    client_feedback: str
+    category: str
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+
+class CandidateDetailResponse(BaseModel):
+    candidate_id: int
+    candidate_name: str
+    position: str
+    status: str
+    feedback: FeedbackResponse | None = None
+
+    class Config:
+        from_attributes = True

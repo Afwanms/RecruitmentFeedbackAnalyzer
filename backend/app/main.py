@@ -1,16 +1,13 @@
 from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from .database import engine, Base, get_db
-from .models import Candidate, Feedback
 from . import crud, schemas, analyze
 from sqlalchemy.orm import Session
 
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173",
-    ],
+    allow_origins=["http://localhost:5173"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -36,7 +33,7 @@ def analyze_feedback(request: schemas.AnalyzeRequest, db: Session = Depends(get_
     }
 
 ## Endpoint to receive data
-@app.get("/candidates/{candidate_id}", response_model=schemas.CandidateResponse)
+@app.get("/candidates/{candidate_id}", response_model=schemas.CandidateDetailResponse)
 def get_candidate(candidate_id: int, db: Session = Depends(get_db)):
     return crud.get_candidate(db, candidate_id)
 

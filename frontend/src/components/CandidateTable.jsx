@@ -1,6 +1,6 @@
 import CandidateRow from "./CandidateRow";
 
-function CandidateTable({candidates}) {
+function CandidateTable({candidates, onAddCandidate}) {
 
     return (
 
@@ -13,6 +13,7 @@ function CandidateTable({candidates}) {
                 </h2>
 
                 <button
+                    onClick={onAddCandidate}
                     className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
                 >
                     + Add Candidate

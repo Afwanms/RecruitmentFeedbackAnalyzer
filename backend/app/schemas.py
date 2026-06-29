@@ -19,6 +19,7 @@ class AnalyzeRequest(BaseModel):
 
 class AnalyzeResponse(BaseModel):
     category: str
+    feedback: str
 
 class DashboardResponse(BaseModel):
     total_candidate: int

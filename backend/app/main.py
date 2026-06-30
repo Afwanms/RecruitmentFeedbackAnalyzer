@@ -38,5 +38,9 @@ def get_candidate(candidate_id: int, db: Session = Depends(get_db)):
     return crud.get_candidate(db, candidate_id)
 
 @app.get("/dashboard", response_model=schemas.DashboardResponse)
-def dashboard(db: Session = Depends(get_db)):
-    return crud.get_dashboard(db)
+def dashboard(status: str | None, position: str | None, db: Session = Depends(get_db)):
+    return crud.get_dashboard(
+        db=db,
+        status=status,
+        position=position
+    )

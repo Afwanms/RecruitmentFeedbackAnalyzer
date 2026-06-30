@@ -46,14 +46,24 @@ def get_candidate_by_id(db: Session, candidate_id: int):
     )
 
 ## Get Dashboard
-def get_dashboard(db: Session, skip: int = 0, limit: int = 100):
+def get_dashboard(db: Session, status: str | None = None, position: str | None = None, skip: int = 0, limit: int = 100):
     total_candidate = db.query(models.Candidate.candidate_id).count()
     total_feedback = db.query(models.Feedback.feedback_id).count()
     top_category = (db.query(models.Feedback.category, func.count(models.Feedback.category).label("count"))
                     .group_by(models.Feedback.category)
                     .order_by(func.count(models.Feedback.category).desc())
                     .first())
-    candidates = db.query(models.Candidate).all()
+    query = db.query(models.Candidate)
+    if status:
+        query = query.filter(models.Candidate.status == status)
+    if position:
+        query = query.filter(models.Candidate.position == position)
+        
+    candidates = (
+                    query
+                    .order_by(models.Candidate.candidate_id.desc())
+                    .all()
+                )
     return {
         "total_candidate": total_candidate,
         "total_feedback": total_feedback,

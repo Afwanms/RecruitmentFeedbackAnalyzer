@@ -1,7 +1,7 @@
 import requests
 
 OLLAMA_URL = "http://localhost:11434/api/generate"
-MODEL = "llama3.2:3b"
+MODEL = "qwen2.5:0.5b"
 
 PROMPT_TEMPLATE = """
 You are an HR assistant.

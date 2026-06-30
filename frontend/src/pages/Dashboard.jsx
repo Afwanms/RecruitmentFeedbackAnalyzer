@@ -9,10 +9,12 @@ import { getDashboard } from "../services/dashboardService";
 function Dashboard() {
   const[dashboard, setDashboard] = useState(null);
   const[isModalOpen, setIsModalOpen] = useState(false);
+  const [statusFilter, setStatusFilter] = useState("");
+  const [positionFilter, setPositionFilter] = useState("");
 
   const fetchDashboard = async () => {
     try {
-      const data = await getDashboard();
+      const data = await getDashboard(statusFilter, positionFilter);
       setDashboard(data);
     } catch (error) {
       console.error(error);
@@ -21,7 +23,7 @@ function Dashboard() {
 
   useEffect(() =>{
     fetchDashboard();
-  }, []);
+  }, [statusFilter, positionFilter]);
 
   if(!dashboard){
     return(
@@ -31,12 +33,15 @@ function Dashboard() {
     );
   }
 
+  const positions = [
+    ...new Set(
+      dashboard.candidates.map(candidate => candidate.position)
+    )
+  ];
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-white">
+      <Header />
       <div className="max-w-7xl mx-auto p-8">
-
-        <Header />
-
         <div className="grid grid-cols-3 gap-6 mb-8">
           <SummaryCard
             title="Total Candidate"
@@ -58,6 +63,11 @@ function Dashboard() {
         <CandidateTable 
           candidates={dashboard.candidates}
           onAddCandidate={() => setIsModalOpen(true)}
+          positions={positions}
+          statusFilter={statusFilter}
+          setStatusFilter={setStatusFilter}
+          positionFilter={positionFilter}
+          setPositionFilter={setPositionFilter}
         />
 
         <AddCandidateModal

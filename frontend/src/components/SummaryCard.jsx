@@ -1,13 +1,13 @@
 function SummaryCard({ title, value }) {
   return (
-    <div className="bg-white rounded-xl shadow p-6">
-      <p className="text-gray-500 text-sm">
-        {title}
-      </p>
+    <div className="bg-black rounded-xl shadow-md p-6 flex flex-col items-center justify-center">
+      <h3 className="text-yellow-400 text-sm uppercase tracking-widest">
+          {title}
+      </h3>
 
-      <h2 className="text-3xl font-bold mt-2">
-        {value}
-      </h2>
+      <p className="text-yellow-400 text-4xl font-extrabold mt-3">
+          {value}
+      </p>
     </div>
   );
 }

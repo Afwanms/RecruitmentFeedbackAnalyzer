@@ -56,7 +56,7 @@ function CandidateDetail() {
     <div className="p-10">
         <button
             onClick={() => navigate("/")}
-            className="flex items-center gap-2 text-blue-600 hover:text-blue-800 mb-6"
+            className="flex items-center gap-2 text-black hover:text-yellow-600 mb-6"
         >
             <ArrowLeft size={18} />
             Back to Dashboard
@@ -94,7 +94,7 @@ function CandidateDetail() {
             </h2>
 
             <textarea
-                rows={8}
+                rows={3}
                 value={feedback}
                 onChange={(e) => setFeedback(e.target.value)}
                 className="w-full border rounded-lg p-3"
@@ -103,7 +103,7 @@ function CandidateDetail() {
 
             <button
                 onClick={handleAnalyze}
-                className="mt-4 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700"
+                className="mt-4 bg-yellow-400 text-black px-6 py-2 rounded-lg hover:bg-yellow-500"
             >
                 {candidate.status === "Analyzed"
                     ? "Update Analysis"
@@ -111,13 +111,12 @@ function CandidateDetail() {
             </button>
         </div>
         <div className="bg-white rounded-xl shadow p-6 mt-6">
-            <h2 className="text-xl font-semibold mb-4">
-                AI Analysis
-            </h2>
             <p>
-                <strong>Category:</strong>
-                {" "}
-                {category}
+                <div>
+                    <span className="font-semibold">Category:</span>
+                    {" "}
+                    {category}
+                </div>
             </p>
         </div>
     </div>

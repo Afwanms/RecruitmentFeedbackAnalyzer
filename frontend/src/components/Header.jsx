@@ -1,15 +1,13 @@
 function Header() {
   return (
-    <header className="mb-8">
-      <h1 className="text-3xl font-bold">
-        Recruitment Decision Analyzer
-      </h1>
-
-      <p className="text-gray-500 mt-1">
-        AI-powered recruitment feedback analysis
-      </p>
+    <header className="w-full bg-yellow-400 shadow-md">
+        <div className="max-w-7xl mx-auto px-8 py-6">
+            <h1 className="text-3xl font-bold text-black">
+                Recruitment Feedback Analyzer
+            </h1>
+        </div>
     </header>
-  );
+      );
 }
 
 export default Header;

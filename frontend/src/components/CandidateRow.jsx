@@ -29,7 +29,7 @@ function CandidateRow({ candidate }) {
             <td className="px-6 py-4">
                 <button
                     onClick={() => navigate(`/candidates/${candidate.candidate_id}`)}
-                    className="text-blue-600 hover:text-blue-800 font-medium"
+                    className="text-black hover:text-yellow-500 font-medium"
                 >
                     View Detail
                 </button>
